@@ -187,7 +187,7 @@
     Q__NOTE(_AS5 ),        \
     Q__NOTE(_B5),        \
     Q__NOTE(_C6 ),        \
-    Q__NOTE(_CS6 ),        
+    Q__NOTE(_CS6 ),
 
 #define MAJOR_SOUND \
     Q__NOTE(_A5 ),        \
@@ -289,6 +289,17 @@
     Q__NOTE(_AS4), \
     Q__NOTE(_B4 ), \
     HD_NOTE(_C5 ), \
+
+#define ADVENTURE_TIME \
+    H__NOTE(_F5),    \
+    Q__NOTE(_F5),    \
+    H__NOTE(_F5),    \
+    H__NOTE(_G5),    \
+    H__NOTE(_E5),    \
+    H__NOTE(_E5),    \
+    H__NOTE(_D5),    \
+    H__NOTE(_C5),    \
+    HD_NOTE(_C6)
 
 #define TERMINAL_SOUND \
     E__NOTE(_C5 )
