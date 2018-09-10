@@ -8,7 +8,21 @@ typedef struct {
   int state;
 } tap;
 
-enum {
+typedef struct {
+  uint16_t h;
+  uint8_t s;
+  uint8_t v;
+} hsv;
+
+// keycodes used internally
+enum tapdance_keycodes {
+  KC_TD_SINGLE_HOLD = SAFE_RANGE,
+  KC_TD_DOUBLE_HOLD,
+  KC_TD_TRIPLE_HOLD,
+  KC_TD_QUAD_HOLD
+};
+
+enum tapdance_states {
   SINGLE_TAP = 1,
   SINGLE_HOLD,
   DOUBLE_TAP,
