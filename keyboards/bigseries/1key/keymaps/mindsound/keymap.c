@@ -10,10 +10,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // static uint16_t tapdance_timer;
 
-static hsv current_hsv;
-
 void matrix_init_user(void) {
-  // hmm this gets blown away by breathing
-  rgblight_sethsv(current_hsv.h, current_hsv.s, current_hsv.v);
+  prepare_to_dong_rgblight_into_submission_I_mean_initialize_it();
 }
 
+void matrix_scan_user(void) {
+  dong_rgblight_into_submission_I_mean_initialize_it();
+}

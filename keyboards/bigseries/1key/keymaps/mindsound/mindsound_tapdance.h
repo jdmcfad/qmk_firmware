@@ -8,10 +8,11 @@ typedef struct {
   int state;
 } tap;
 
+// NOTE: I'm using 16 bit types for s and v so I don't have to worry about overflow in my math
 typedef struct {
   uint16_t h;
-  uint8_t s;
-  uint8_t v;
+  uint16_t s;
+  uint16_t v;
 } hsv;
 
 // keycodes used internally
@@ -34,14 +35,19 @@ enum tapdance_states {
   END_MAGIC
 };
 
-//Tap dance enums
+// https://i.imgur.com/rosLdn2.gif
 enum TAP_DANCE {
-  // https://i.imgur.com/rosLdn2.gif
   TD_ALLONS_Y = 0,
 };
 
 int cur_dance (qk_tap_dance_state_t *state);
+void key_finished (qk_tap_dance_state_t *state, void *user_data);
+void key_reset (qk_tap_dance_state_t *state, void *user_data);
 
-//for the x tap dance. Put it here so it can be used in any keymap
-void x_finished (qk_tap_dance_state_t *state, void *user_data);
-void x_reset (qk_tap_dance_state_t *state, void *user_data);
+// HSV helper functions
+void prepare_to_dong_rgblight_into_submission_I_mean_initialize_it(void);
+void dong_rgblight_into_submission_I_mean_initialize_it(void);
+void inc_hue(void);
+void inc_sat(void);
+void inc_val(void);
+void update_rgblight(void);
