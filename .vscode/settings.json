@@ -14,6 +14,7 @@
         "*.hpp": "cpp",
         "xstddef": "c",
         "cmath": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "system_error": "c"
     }
 }

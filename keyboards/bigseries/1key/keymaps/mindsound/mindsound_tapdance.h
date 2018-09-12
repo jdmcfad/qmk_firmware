@@ -20,7 +20,8 @@ enum tapdance_keycodes {
   KC_TD_SINGLE_HOLD = SAFE_RANGE,
   KC_TD_DOUBLE_HOLD,
   KC_TD_TRIPLE_HOLD,
-  KC_TD_QUAD_HOLD
+  KC_TD_QUAD_HOLD,
+  KC_TD_PENTA_HOLD
 };
 
 enum tapdance_states {
@@ -32,6 +33,8 @@ enum tapdance_states {
   TRIPLE_HOLD,
   QUAD_TAP,
   QUAD_HOLD,
+  PENTA_TAP,
+  PENTA_HOLD,
   END_MAGIC
 };
 
@@ -39,6 +42,10 @@ enum tapdance_states {
 enum TAP_DANCE {
   TD_ALLONS_Y = 0,
 };
+
+// state variables for dealing with custom held keys
+volatile uint16_t held_keycode_timer;
+volatile uint16_t held_keycode;
 
 int cur_dance (qk_tap_dance_state_t *state);
 void key_finished (qk_tap_dance_state_t *state, void *user_data);
@@ -50,4 +57,5 @@ void dong_rgblight_into_submission_I_mean_initialize_it(void);
 void inc_hue(void);
 void inc_sat(void);
 void inc_val(void);
+void reset_rgblight(void);
 void update_rgblight(void);
