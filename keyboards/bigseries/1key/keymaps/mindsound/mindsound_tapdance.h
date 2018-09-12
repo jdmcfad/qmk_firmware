@@ -44,8 +44,11 @@ enum TAP_DANCE {
 };
 
 // state variables for dealing with custom held keys
-volatile uint16_t held_keycode_timer;
+volatile bool party_mode_active;
+volatile uint16_t party_mode_hue;
+volatile uint16_t party_mode_timer;
 volatile uint16_t held_keycode;
+volatile uint16_t held_keycode_timer;
 
 int cur_dance (qk_tap_dance_state_t *state);
 void key_finished (qk_tap_dance_state_t *state, void *user_data);
@@ -59,3 +62,4 @@ void inc_sat(void);
 void inc_val(void);
 void reset_rgblight(void);
 void update_rgblight(void);
+void update_party_mode(uint16_t inc_hue);

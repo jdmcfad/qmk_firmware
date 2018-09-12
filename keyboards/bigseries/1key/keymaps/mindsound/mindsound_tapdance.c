@@ -6,12 +6,12 @@
 // increments for h, s, v
 // factors of 360: 1,2,3,4,5,6,8,9,10,12,15,18,20,24,30,36,40,45,60,72,90,120,180,360
 #define HUE_INCREMENT 2
-#define SAT_INCREMENT 4
-#define VAL_INCREMENT 2
-#define DEFAULT_HUE 200
-#define DEFAULT_SAT 40
-#define DEFAULT_VAL 128
-#define MAX_VAL 150 // this is somewhat empirical
+#define SAT_INCREMENT 5
+#define VAL_INCREMENT 3
+#define DEFAULT_HUE 230
+#define DEFAULT_SAT 50
+#define DEFAULT_VAL 110
+#define MAX_VAL 180 // this is empirical based on when the PCB brightness seems to cap
 #define INIT_DELAY 200
 
 static uint16_t delay_runonce;
@@ -59,13 +59,18 @@ int cur_dance (qk_tap_dance_state_t *state) {
 void key_finished (qk_tap_dance_state_t *state, void *user_data) {
   key_tap_state.state = cur_dance(state);
   switch (key_tap_state.state) {
+    // tap keys:
     case SINGLE_TAP:  register_code16(KC_ENTER); break;
+    case DOUBLE_TAP:  SEND_STRING("if err != nil {"SS_TAP(X_ENTER)); break;
+    case TRIPLE_TAP:  reset_rgblight(); break;
+    case QUAD_TAP:    party_mode_active = true; break;
+    case PENTA_TAP:   reset_keyboard(); break;
+
+    // hold keys:
     case SINGLE_HOLD: held_keycode = KC_TD_SINGLE_HOLD; break;
     case DOUBLE_HOLD: held_keycode = KC_TD_DOUBLE_HOLD; break;
     case TRIPLE_HOLD: held_keycode = KC_TD_TRIPLE_HOLD; break;
     case QUAD_HOLD:   held_keycode = KC_TD_QUAD_HOLD; break;
-    case TRIPLE_TAP:  reset_rgblight(); break;
-    case PENTA_TAP:   reset_keyboard(); break;
   }
 
   // reset the key hold timer regardless:
@@ -132,7 +137,19 @@ void reset_rgblight(void) {
   update_rgblight();
 }
 
+void update_party_mode(uint16_t inc_hue) {
+  // there are 5 LEDs so we'll set them to hues 360/5 apart
+  rgblight_sethsv_at(party_mode_hue,               255, 140, 0);
+  rgblight_sethsv_at((party_mode_hue + 72) % 360,  255, 140, 1);
+  rgblight_sethsv_at((party_mode_hue + 144) % 360, 255, 140, 2);
+  rgblight_sethsv_at((party_mode_hue + 216) % 360, 255, 140, 3);
+  rgblight_sethsv_at((party_mode_hue + 288) % 360, 255, 140, 4);
+
+  party_mode_hue = (party_mode_hue + inc_hue) % 360;
+}
+
 void update_rgblight(void) {
+  party_mode_active = false;
   uint8_t s = 255 - (current_hsv.s < 256 ? (uint8_t) current_hsv.s : (uint8_t)(512 - current_hsv.s - 1));
   uint8_t v = current_hsv.v < MAX_VAL ? (uint8_t) current_hsv.v : (uint8_t)(2 * MAX_VAL - current_hsv.v - 1);
   rgblight_sethsv_noeeprom(current_hsv.h, s, v);
