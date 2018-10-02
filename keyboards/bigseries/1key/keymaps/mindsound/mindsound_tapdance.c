@@ -8,9 +8,9 @@
 #define HUE_INCREMENT 2
 #define SAT_INCREMENT 5
 #define VAL_INCREMENT 3
-#define DEFAULT_HUE 230
-#define DEFAULT_SAT 50
-#define DEFAULT_VAL 110
+#define DEFAULT_HUE 220
+#define DEFAULT_SAT 170 // higher values are less saturated since my ramp reverses it
+#define DEFAULT_VAL 100
 #define MAX_VAL 180 // this is empirical based on when the PCB brightness seems to cap
 #define INIT_DELAY 200
 
@@ -139,13 +139,14 @@ void reset_rgblight(void) {
 
 void update_party_mode(uint16_t inc_hue) {
   // there are 5 LEDs so we'll set them to hues 360/5 apart
-  rgblight_sethsv_at(party_mode_hue,               255, 140, 0);
-  rgblight_sethsv_at((party_mode_hue + 72) % 360,  255, 140, 1);
-  rgblight_sethsv_at((party_mode_hue + 144) % 360, 255, 140, 2);
-  rgblight_sethsv_at((party_mode_hue + 216) % 360, 255, 140, 3);
-  rgblight_sethsv_at((party_mode_hue + 288) % 360, 255, 140, 4);
+  static uint16_t party_mode_hues[] = {0, 72, 144, 216, 288};
 
-  party_mode_hue = (party_mode_hue + inc_hue) % 360;
+  for (int ii = 0; ii < 5; ii++) {
+    rgblight_sethsv_at(party_mode_hues[ii], 255, 140, ii);
+  }
+  for (int ii = 0; ii < 5; ii++) {
+    party_mode_hues[ii] = (party_mode_hues[ii] + inc_hue) % 360;
+  }
 }
 
 void update_rgblight(void) {

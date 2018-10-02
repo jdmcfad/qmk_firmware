@@ -45,7 +45,6 @@ enum TAP_DANCE {
 
 // state variables for dealing with custom held keys
 volatile bool party_mode_active;
-volatile uint16_t party_mode_hue;
 volatile uint16_t party_mode_timer;
 volatile uint16_t held_keycode;
 volatile uint16_t held_keycode_timer;

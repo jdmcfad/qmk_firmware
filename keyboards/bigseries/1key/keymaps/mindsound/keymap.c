@@ -5,7 +5,7 @@
 //#pragma message "QMK_KEYBOARD_H=" STR(QMK_KEYBOARD_H)
 
 #define PARTY_RATE_MS 10
-#define PARTY_INC 8
+#define PARTY_INC 3
 #define UPDATE_RATE_MS 50
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
