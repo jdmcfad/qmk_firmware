@@ -61,7 +61,7 @@ void key_finished (qk_tap_dance_state_t *state, void *user_data) {
   switch (key_tap_state.state) {
     // tap keys:
     case SINGLE_TAP:  register_code16(KC_ENTER); break;
-    case DOUBLE_TAP:  SEND_STRING("if err != nil {"SS_TAP(X_ENTER)); break;
+    case DOUBLE_TAP:  register_code16(LGUI(KC_L)); break;
     case TRIPLE_TAP:  reset_rgblight(); break;
     case QUAD_TAP:    party_mode_active = true; break;
     case PENTA_TAP:   reset_keyboard(); break;
@@ -81,6 +81,9 @@ void key_reset (qk_tap_dance_state_t *state, void *user_data) {
   switch (key_tap_state.state) {
     case SINGLE_TAP:
       unregister_code16(KC_ENTER);
+      break;
+    case DOUBLE_TAP:
+      unregister_code16(LGUI(KC_L));
       break;
     default:
       held_keycode = 0;
