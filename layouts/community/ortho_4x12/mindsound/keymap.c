@@ -44,6 +44,10 @@ uint8_t flicker_restore_level = 0;
 #define CTRL_ESC MT(MOD_LCTL, KC_ESC)
 #define HYPR_SPC MT(MOD_HYPR, KC_SPC)
 
+// wait DELAY ms before unregistering media keys
+#define MEDIA_KEY_DELAY 10
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Qwerty
@@ -195,11 +199,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void encoder_update(bool clockwise) {
+  // handle layers
+  if (IS_LAYER_ON(_RAISE)) {
+    if (clockwise) {
+      clicky_freq_up();
+      clicky_play();
+    } else {
+      clicky_freq_down();
+      clicky_play();
+    }
+
+    return;
+  }
+
+  // handle base layer
+  uint16_t held_keycode_timer = timer_read();
   if (clockwise) {
     register_code(KC_VOLU);
+    while (timer_elapsed(held_keycode_timer) < MEDIA_KEY_DELAY) {
+      // no-op
+    }
     unregister_code(KC_VOLU);
   } else {
     register_code(KC_VOLD);
+    while (timer_elapsed(held_keycode_timer) < MEDIA_KEY_DELAY) {
+      // no-op
+    }
     unregister_code(KC_VOLD);
   }
 }
