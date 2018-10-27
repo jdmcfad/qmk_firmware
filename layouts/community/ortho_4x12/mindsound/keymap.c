@@ -4,7 +4,12 @@
 #include "flicker.h"
 #endif
 
+// TODO: guard everything with ifdef AUDIO_ENABLE
+#include "audio_delay.h"
+
 extern keymap_config_t keymap_config;
+
+audio_delay_queue queue;
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -128,8 +133,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 }; // end keymaps
 
 // if backlighting is enabled, configure it on boot
-#ifdef BACKLIGHT_ENABLE
 void matrix_init_user(void) {
+#ifdef BACKLIGHT_ENABLE
   // set to max
   backlight_level(BACKLIGHT_LEVELS);
   flicker_restore_level = get_backlight_level();
@@ -138,8 +143,10 @@ void matrix_init_user(void) {
 #ifdef BACKLIGHT_BREATHING
   breathing_disable();
 #endif
+#endif // BACKLIGHT_ENABLE
+
+  audio_delay_clear(&queue);
 }
-#endif
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {

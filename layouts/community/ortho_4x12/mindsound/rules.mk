@@ -1,15 +1,15 @@
+SRC += audio_delay.c
+
 # none of my keyboards need LTO and it screws up I2C on my LSVI:
 EXTRAFLAGS:=$(filter-out -flto,$(EXTRAFLAGS))
 
 # turning off backlighting and audio for the split keebs
 ifneq (,$(findstring lets_split,$(KEYBOARD)))
   BACKLIGHT_ENABLE = no
-  BACKLIGHT_BREATHING = no
   AUDIO_ENABLE = no
 endif
 ifneq (,$(findstring vitamins_included,$(KEYBOARD)))
   BACKLIGHT_ENABLE = no
-  BACKLIGHT_BREATHING = no
   AUDIO_ENABLE = no
 endif
 
@@ -17,10 +17,10 @@ endif
 ifneq (,$(findstring planck,$(KEYBOARD)))
   ifneq (,$(findstring rev4,$(KEYBOARD)))
     BACKLIGHT_ENABLE = yes
-    BACKLIGHT_BREATHING = no
   else
     BACKLIGHT_ENABLE = no
-    BACKLIGHT_BREATHING = no
   endif
   AUDIO_ENABLE = yes
 endif
+
+BACKLIGHT_BREATHING = no
