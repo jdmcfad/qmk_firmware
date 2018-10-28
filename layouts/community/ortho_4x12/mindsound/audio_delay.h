@@ -3,7 +3,7 @@
 #pragma once
 
 // the fixed queue depth for delayed audio events
-#define AUDIO_DELAY_QUEUE_SIZE 100
+#define AUDIO_DELAY_QUEUE_SIZE 200
 
 // setting this to n will poll the queue every nth matrix scan
 #define AUDIO_DELAY_POLL_FACTOR 10

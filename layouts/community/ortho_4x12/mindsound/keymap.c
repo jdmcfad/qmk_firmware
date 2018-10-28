@@ -217,22 +217,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
 
   if (record->event.pressed) {
-    const int echoes = 8;
-    const int base_duration = 10; // must be greater than echoes!
-    const int base_delay = 300;
-    const float freq_detune = 0.99f;
-    const float delay_stretch = 0.1f;
+    static int counter;
+    const int echoes = 9;
+    const int base_duration = 14; // must be greater than echoes!
+    const uint16_t initial_delay = 30;
+    const uint16_t base_delay = 730;
+    const float freq_detune = 0.998f;
+    const float delay_stretch = 0.08f;
 
-    // random frequency
-    float freq = (1.0f + ((float)rand())/((float)RAND_MAX)) * 440.0f * 5.0f;
+    // random diatonic frequency
+    // float freq = 440.0f * (float)pow(2.0d, floor((((double)rand())/((double)RAND_MAX)) * 48.0d) / 12.0d);
+
+    // random pentatonic frequency
+    #define PENTATONIC_SCALE_LENGTH 5
+    double pentatonic_scale[PENTATONIC_SCALE_LENGTH] = {0, 2, 4, 7, 9};
+    #define PENTATONIC_FREQS_LENGTH 18
+    float pentatonic_freqs[PENTATONIC_FREQS_LENGTH];
+    for (int ii = 0; ii < PENTATONIC_FREQS_LENGTH; ii++) {
+      double note = pentatonic_scale[ii % PENTATONIC_SCALE_LENGTH];
+      double octave = ii / PENTATONIC_SCALE_LENGTH;
+      pentatonic_freqs[ii] = 440.0f * (float)(pow(2.0d, note/12.0d) * pow(2.0d, octave));
+    }
+    float freq = pentatonic_freqs[(++counter) % PENTATONIC_FREQS_LENGTH];
 
     for (int ii = 0; ii < echoes; ii++) {
 
       // lower the frequency slightly each iteration
       freq *= freq_detune;
 
-      uint16_t delay = (uint16_t)(((float)(base_delay * ii)) * (1.0f + delay_stretch * (float)ii));
+      uint16_t delay = initial_delay + (uint16_t)(((float)(base_delay * ii)) * (delay_stretch * (float)ii));
       uint16_t duration = base_duration - ii;
+
       audio_delay_push(&queue,  delay, (audio_delay_event){freq, 0.0f, duration});
     }
   }
