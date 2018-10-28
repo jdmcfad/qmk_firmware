@@ -218,10 +218,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   if (record->event.pressed) {
     static int counter;
-    const int echoes = 9;
-    const int base_duration = 14; // must be greater than echoes!
+    const int echoes = 7;
+    const int base_duration = 13; // must be greater than echoes!
     const uint16_t initial_delay = 30;
-    const uint16_t base_delay = 730;
+    const uint16_t base_delay = 800;
     const float freq_detune = 0.998f;
     const float delay_stretch = 0.08f;
 
@@ -238,7 +238,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       double octave = ii / PENTATONIC_SCALE_LENGTH;
       pentatonic_freqs[ii] = 440.0f * (float)(pow(2.0d, note/12.0d) * pow(2.0d, octave));
     }
-    float freq = pentatonic_freqs[(++counter) % PENTATONIC_FREQS_LENGTH];
+
+    // count up and down
+    counter += 1;
+    bool countup = (counter / PENTATONIC_FREQS_LENGTH) % 2 == 0;
+    int pentatonic_freq_index;
+    if (countup)
+      pentatonic_freq_index = counter % PENTATONIC_FREQS_LENGTH;
+    else
+      pentatonic_freq_index = PENTATONIC_FREQS_LENGTH - (counter % PENTATONIC_FREQS_LENGTH) - 1;
+
+    // 33%ish chance of picking a note two notes away but carefully bound the values
+    if (rand() % 3 == 0) {
+      pentatonic_freq_index += 2 * ((rand() % 3) - 1);
+    }
+    if (pentatonic_freq_index < 0)
+      pentatonic_freq_index = 0;
+    if (pentatonic_freq_index >= PENTATONIC_FREQS_LENGTH)
+      pentatonic_freq_index = PENTATONIC_FREQS_LENGTH - 1;
+
+    float freq = pentatonic_freqs[pentatonic_freq_index];
 
     for (int ii = 0; ii < echoes; ii++) {
 
