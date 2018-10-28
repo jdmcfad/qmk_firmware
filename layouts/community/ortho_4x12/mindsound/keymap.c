@@ -217,9 +217,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
 
   if (record->event.pressed) {
-    audio_delay_push(&queue, 250, (audio_delay_event){440.0f, 440.0f, 3});
-    audio_delay_push(&queue, 500, (audio_delay_event){440.0f, 440.0f, 2});
-    audio_delay_push(&queue, 750, (audio_delay_event){440.0f, 440.0f, 1});
+    const int echoes = 8;
+    const int base_duration = 10; // must be greater than echoes!
+    const int base_delay = 300;
+    const float freq_detune = 0.99f;
+    const float delay_stretch = 0.1f;
+
+    // random frequency
+    float freq = (1.0f + ((float)rand())/((float)RAND_MAX)) * 440.0f * 5.0f;
+
+    for (int ii = 0; ii < echoes; ii++) {
+
+      // lower the frequency slightly each iteration
+      freq *= freq_detune;
+
+      uint16_t delay = (uint16_t)(((float)(base_delay * ii)) * (1.0f + delay_stretch * (float)ii));
+      uint16_t duration = base_duration - ii;
+      audio_delay_push(&queue,  delay, (audio_delay_event){freq, 0.0f, duration});
+    }
   }
 
   return true;

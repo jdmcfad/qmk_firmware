@@ -13,6 +13,7 @@
         "*.cpp": "cpp",
         "*.hpp": "cpp",
         "xstddef": "c",
-        "array": "c"
+        "array": "c",
+        "cmath": "c"
     }
 }
