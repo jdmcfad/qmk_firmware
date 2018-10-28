@@ -230,7 +230,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // random pentatonic frequency
     #define PENTATONIC_SCALE_LENGTH 5
-    double pentatonic_scale[PENTATONIC_SCALE_LENGTH] = {0, 2, 4, 7, 9};
+    #define PENTATONIC_SCALE_MAJOR   {0,2,4,7,9}
+    #define PENTATONIC_SCALE_MINOR   {0,2,4,7,7}
+    #define PENTATONIC_SCALE_FOURTHS {0,5,7,5,10}
+    #define PENTATONIC_RANDOM_DETUNE 0.01f
+    double pentatonic_scale[PENTATONIC_SCALE_LENGTH] = PENTATONIC_SCALE_FOURTHS;
     #define PENTATONIC_FREQS_LENGTH 18
     float pentatonic_freqs[PENTATONIC_FREQS_LENGTH];
     for (int ii = 0; ii < PENTATONIC_FREQS_LENGTH; ii++) {
@@ -257,7 +261,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (pentatonic_freq_index >= PENTATONIC_FREQS_LENGTH)
       pentatonic_freq_index = PENTATONIC_FREQS_LENGTH - 1;
 
-    float freq = pentatonic_freqs[pentatonic_freq_index];
+    float freq = pentatonic_freqs[pentatonic_freq_index] * (1.0f + ( PENTATONIC_RANDOM_DETUNE * ((float)rand())/((float)RAND_MAX) ));
 
     for (int ii = 0; ii < echoes; ii++) {
 
