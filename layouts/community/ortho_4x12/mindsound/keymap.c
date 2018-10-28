@@ -29,6 +29,9 @@ enum planck_keycodes {
   BL_FLICKER
 };
 
+// audio delay stuff:
+float delay_song[][2] = {{440, 1}};
+
 // flicker state:
 #ifdef BACKLIGHT_ENABLE
 bool flicker_enable = true;
@@ -148,6 +151,17 @@ void matrix_init_user(void) {
   audio_delay_clear(&queue);
 }
 
+void matrix_scan_user(void) {
+  audio_delay_event *event = audio_delay_polling_pop(&queue);
+  if (event == NULL) {
+    return;
+  }
+
+  delay_song[0][0] = event->freq1;
+  delay_song[0][1] = event->duration;
+  play_notes(&delay_song, 1, false);
+}
+
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
   return MACRO_NONE;
@@ -201,6 +215,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
   }
 #endif
+
+  if (record->event.pressed) {
+    audio_delay_push(&queue, 250, (audio_delay_event){440.0f, 440.0f, 3});
+    audio_delay_push(&queue, 500, (audio_delay_event){440.0f, 440.0f, 2});
+    audio_delay_push(&queue, 750, (audio_delay_event){440.0f, 440.0f, 1});
+  }
 
   return true;
 }
