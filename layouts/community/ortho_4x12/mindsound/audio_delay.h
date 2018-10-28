@@ -24,8 +24,8 @@ typedef struct {
 
 // represents an entry in the delay queue
 typedef struct {
-  uint16_t          timer;
-  uint16_t          delay_ms;
+  uint32_t          timer;
+  uint32_t          delay_ms;
   audio_delay_event event;
 } audio_delay_entry;
 

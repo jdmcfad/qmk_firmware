@@ -218,10 +218,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   if (record->event.pressed) {
     static int counter;
-    const int echoes = 7;
-    const int base_duration = 13; // must be greater than echoes!
-    const uint16_t initial_delay = 30;
-    const uint16_t base_delay = 800;
+    const int echoes = 8;
+    const int base_duration = 11; // must be greater than echoes!
+    const uint32_t initial_delay = 30;
+    const uint32_t base_delay = 1700;
     const float freq_detune = 0.998f;
     const float delay_stretch = 0.08f;
 
@@ -248,9 +248,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     else
       pentatonic_freq_index = PENTATONIC_FREQS_LENGTH - (counter % PENTATONIC_FREQS_LENGTH) - 1;
 
-    // 33%ish chance of picking a note two notes away but carefully bound the values
-    if (rand() % 3 == 0) {
-      pentatonic_freq_index += 2 * ((rand() % 3) - 1);
+    // 40% chance of picking a note a few notes away but carefully bound the values
+    if (rand() % 5 < 1) {
+      pentatonic_freq_index += 2 * ((rand() % 7) - 3);
     }
     if (pentatonic_freq_index < 0)
       pentatonic_freq_index = 0;
@@ -264,8 +264,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       // lower the frequency slightly each iteration
       freq *= freq_detune;
 
-      uint16_t delay = initial_delay + (uint16_t)(((float)(base_delay * ii)) * (delay_stretch * (float)ii));
-      uint16_t duration = base_duration - ii;
+      uint32_t delay = initial_delay + (uint32_t)(((float)(base_delay * ii)) * (delay_stretch * (float)(ii + 1)));
+      uint32_t duration = base_duration - ii;
 
       audio_delay_push(&queue,  delay, (audio_delay_event){freq, 0.0f, duration});
     }

@@ -36,7 +36,7 @@ void audio_delay_push(audio_delay_queue *queue, uint16_t delay_ms, audio_delay_e
     entry = &(queue->entries[ii]);
   }
 
-  entry->timer = timer_read();
+  entry->timer = timer_read32();
   entry->delay_ms = delay_ms;
   entry->event = event;
 }
