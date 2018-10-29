@@ -1,15 +1,15 @@
 #pragma once
 
 #define ADVENTURE_TIME \
-    H__NOTE(_F5),    \
-    Q__NOTE(_F5),    \
-    H__NOTE(_F5),    \
-    H__NOTE(_G5),    \
-    H__NOTE(_E5),    \
-    H__NOTE(_E5),    \
-    H__NOTE(_D5),    \
-    H__NOTE(_C5),    \
-    HD_NOTE(_C6),
+    H__NOTE(_F6),    \
+    Q__NOTE(_F6),    \
+    H__NOTE(_F6),    \
+    H__NOTE(_G6),    \
+    H__NOTE(_E6),    \
+    H__NOTE(_E6),    \
+    H__NOTE(_D6),    \
+    H__NOTE(_C6),    \
+    HD_NOTE(_C7),
 
 #ifdef AUDIO_ENABLE
   // #define STARTUP_SONG SONG(ADVENTURE_TIME)

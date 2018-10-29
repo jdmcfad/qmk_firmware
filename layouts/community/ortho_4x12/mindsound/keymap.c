@@ -218,12 +218,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   if (record->event.pressed) {
     static int counter;
-    const int echoes = 8;
-    const int base_duration = 11; // must be greater than echoes!
+    const int echoes = 9;
+    const int base_duration = 10; // must be greater than echoes!
     const uint32_t initial_delay = 30;
-    const uint32_t base_delay = 1700;
-    const float freq_detune = 0.998f;
-    const float delay_stretch = 0.08f;
+    const uint32_t base_delay = 1750;
+    const float freq_detune = 0.997f;
+    const float delay_stretch = 0.085f;
 
     // random diatonic frequency
     // float freq = 440.0f * (float)pow(2.0d, floor((((double)rand())/((double)RAND_MAX)) * 48.0d) / 12.0d);
@@ -234,7 +234,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     #define PENTATONIC_SCALE_MINOR   {0,2,4,7,7}
     #define PENTATONIC_SCALE_FOURTHS {0,5,7,5,10}
     #define PENTATONIC_RANDOM_DETUNE 0.01f
-    double pentatonic_scale[PENTATONIC_SCALE_LENGTH] = PENTATONIC_SCALE_FOURTHS;
+    double pentatonic_scale[PENTATONIC_SCALE_LENGTH] = PENTATONIC_SCALE_MAJOR;
     #define PENTATONIC_FREQS_LENGTH 18
     float pentatonic_freqs[PENTATONIC_FREQS_LENGTH];
     for (int ii = 0; ii < PENTATONIC_FREQS_LENGTH; ii++) {
