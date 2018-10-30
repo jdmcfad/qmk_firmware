@@ -8,13 +8,6 @@
 // setting this to n will poll the queue every nth matrix scan
 #define AUDIO_DELAY_POLL_FACTOR 10
 
-// represents the eviction policy to be used in case the queue is full
-typedef enum {
-
-  // choose a queue position at random
-  EVICT_RANDOM = 0
-} eviction_policy;
-
 // represents an audio event to be delayed
 typedef struct {
   float    freq1;
@@ -32,12 +25,7 @@ typedef struct {
 // the high level queue data structure
 typedef struct {
   audio_delay_entry entries[AUDIO_DELAY_QUEUE_SIZE];
-  eviction_policy   policy;
 } audio_delay_queue;
-
-// "helper" declarations:
-bool is_audio_delay_entry_clear(audio_delay_entry *entry);
-void audio_delay_clear_entry(audio_delay_entry *entry);
 
 /*
  * Audio delay queue functions:

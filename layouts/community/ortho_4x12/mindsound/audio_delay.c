@@ -2,13 +2,12 @@
 
 #include <string.h>
 
-
-// "private" helpers:
-
+// "private" helper declarations:
+bool is_audio_delay_entry_clear(audio_delay_entry *entry);
+void audio_delay_clear_entry(audio_delay_entry *entry);
 inline bool is_audio_delay_entry_clear(audio_delay_entry *entry) {
   return entry->delay_ms == 0;
 }
-
 inline void audio_delay_clear_entry(audio_delay_entry *entry) {
   entry->delay_ms = 0;
 }
