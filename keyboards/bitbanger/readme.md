@@ -1,29 +1,18 @@
-Techkeys SixKeyBoard
+BitBanger
 ===
 
 Keyboard Maintainer: QMK Community
-Hardware Supported: Techkeys SixKeyBoard PCB
-Hardware Availability: http://techkeys.us/collections/accessories/products/sixkeyboard
+Hardware Supported: Woodkeys 2-key kit (based on a standard Pro Micro)
+Hardware Availability: https://woodkeys.click/product/2-key-kit/
+
+This keyboard types 7-bit ASCII!  I didn't bother trying to support an 8 bit charset (CP1252, etc.) so, among other things, all the valid keycodes start with a '0'.  If I keep working on this, the next feature I want to add is a timeout.  Right now the firmware is fully stateful, so that, if you hit two keys and walk away for a day, tomorrow you can hit six keys and it'll output a keycode.  Counterintuitive.
 
 Make example for this keyboard (after setting up your build environment):
 
-    make sixkeyboard-default
+    make bitbanger:default
 
-See [build environment setup](https://docs.qmk.fm/build_environment_setup.html) then the [make instructions](https://docs.qmk.fm/make_instructions.html) for more information.
+To flash, short RST and GND (or type 00010001) and run:
 
-## Hardware Info
+    make bitbanger:default:avrdude
 
-The schematic is like this:
-
-```
- switches       leds
-,--+--+--.   ,--+--+--.
-|C7|B7|B5|   |C6|B6|B4|
-+--+--+--+   +--+--+--+
-|D6|D1|D4|   |D5|D2|D3|
-`--+--+--'   `--+--+--'
-```
-
-The LED on the bottom is `C4`. All 7 of the leds are turned on when the keyboard boots-up in the `sixkeyboard.c` file - backlight_enable is not required. The MCU is an Atmega16u2, so the flash memory is limited to 0x3000 bytes - the current setup uses just about all of that! I'm sure things can be opitimised a bit.
-
-There is a jumper on the bottom of the board (next to the USB port) that serves as a reset button - I drilled a hole in my case to allow for quick access via a screwdriver/metal object.
+I hacked this together based on a branch /u/woodkeys_click had handy so I won't pretend to document the hardware.  :C
