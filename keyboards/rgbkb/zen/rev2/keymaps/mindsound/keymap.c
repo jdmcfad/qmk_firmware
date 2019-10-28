@@ -8,6 +8,7 @@ extern keymap_config_t keymap_config;
 // entirely and just use numbers.
 enum layer_number {
     _QWERTY = 0,
+    _GAMING,
     _LOWER,
     _RAISE,
 };
@@ -16,6 +17,9 @@ enum custom_keycodes {
   QWERTY = SAFE_RANGE
 };
 
+
+#define QWERTY TO(_QWERTY)
+#define GAMING TO(_GAMING)
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 
@@ -49,6 +53,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                  HYPR_SPC,KC_ENT, KC_BSPC,   KC_SPACE \
   ),
 
+  /* GAMING
+   */
+  [_GAMING] = LAYOUT( \
+    _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+    _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+    _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+    _______, _______, _______, _______, _______, KC_SPACE,_______, _______, _______, _______, _______, _______, _______, _______, \
+                                                 KC_SPACE,_______, _______, _______ \
+  ),
+
   /* LOWER
    */
   [_LOWER] = LAYOUT( \
@@ -56,8 +71,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TILD, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
     _______, RGB_SAI, RGB_VAI, RGB_SAD, _______, _______,                   _______, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, \
     _______, RGB_HUD, RGB_VAD, RGB_HUI, _______, _______, RGB_RMOD,RGB_MOD, _______, _______, _______, KC_HOME, KC_END,  _______, \
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY, \
-                                                 _______, _______, _______, _______ \
+    _______, _______, _______, _______, _______, QWERTY,  _______, _______, GAMING,  _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY, \
+                                                 QWERTY,  _______, _______, GAMING \
   ),
 
   /* RAISE
@@ -67,8 +82,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_GRV,  _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
     _______, RGB_SAI, RGB_VAI, RGB_SAD, _______, _______,                   _______, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS, \
     _______, RGB_HUD, RGB_VAD, RGB_HUI, _______, _______, RGB_RMOD,RGB_MOD, _______, _______, _______, KC_PGUP, KC_PGDN, _______, \
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY, \
-                                                 _______, _______, _______, _______ \
+    _______, _______, _______, _______, _______, QWERTY,  _______, _______, GAMING,  _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY, \
+                                                 QWERTY,  _______, _______, GAMING \
   ),
 
 };
