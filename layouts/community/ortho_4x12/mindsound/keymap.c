@@ -18,6 +18,7 @@ audio_delay_queue queue;
 
 enum planck_layers {
   _QWERTY,
+  _GAMING,
   _LOWER,
   _RAISE,
   _ADJUST
@@ -41,6 +42,8 @@ const uint8_t flicker_max_levels = 7;
 uint8_t flicker_restore_level = 0;
 #endif
 
+#define QWERTY TO(_QWERTY)
+#define GAMING TO(_GAMING)
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 
@@ -72,6 +75,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_MPLY,  KC_DEL,  KC_LGUI, KC_LALT, LOWER, HYPR_SPC, KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
 ),
 
+// Gaming layer disables MT() so the left space can be held down properly
+[_GAMING] = LAYOUT_ortho_4x12(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, KC_SPC,  _______, _______, _______, _______, _______, _______  \
+),
+
 
 /* Lower
  * ,-----------------------------------------------------------------------------------.
@@ -88,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR,    KC_ASTR,    KC_LPRN, KC_RPRN, KC_BSPC, \
   _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_UNDS,    KC_PLUS,    KC_LCBR, KC_RCBR, KC_PIPE, \
   _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  S(KC_NUHS), S(KC_NUBS), KC_HOME, KC_END,  _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______,    KC_MNXT,    KC_VOLD, KC_VOLU, KC_MPLY  \
+  _______, _______, _______, _______, _______, QWERTY,  GAMING,  _______,    KC_MNXT,    KC_VOLD, KC_VOLU, KC_MPLY  \
 ),
 
 
@@ -107,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC, \
   _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS, \
   _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY  \
+  _______, _______, _______, _______, _______, QWERTY,  GAMING,  _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY  \
 ),
 
 
@@ -144,19 +155,19 @@ void matrix_init_user(void) {
 #endif
 #endif // BACKLIGHT_ENABLE
 
-  audio_delay_clear(&queue);
+//   audio_delay_clear(&queue);
 }
 
-void matrix_scan_user(void) {
-  audio_delay_event *event = audio_delay_polling_pop(&queue);
-  if (event == NULL) {
-    return;
-  }
+// void matrix_scan_user(void) {
+//   audio_delay_event *event = audio_delay_polling_pop(&queue);
+//   if (event == NULL) {
+//     return;
+//   }
 
-  delay_song[0][0] = event->freq1;
-  delay_song[0][1] = event->duration;
-  play_notes(&delay_song, 1, false);
-}
+//   delay_song[0][0] = event->freq1;
+//   delay_song[0][1] = event->duration;
+//   play_notes(&delay_song, 1, false);
+// }
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
@@ -212,64 +223,64 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 #endif
 
-  if (record->event.pressed) {
-    static int counter;
-    const int echoes = 9;
-    const int base_duration = 10; // must be greater than echoes!
-    const uint32_t initial_delay = 30;
-    const uint32_t base_delay = 1750;
-    const float freq_detune = 0.997f;
-    const float delay_stretch = 0.085f;
+//   if (record->event.pressed) {
+//     static int counter;
+//     const int echoes = 9;
+//     const int base_duration = 10; // must be greater than echoes!
+//     const uint32_t initial_delay = 30;
+//     const uint32_t base_delay = 1750;
+//     const float freq_detune = 0.997f;
+//     const float delay_stretch = 0.085f;
 
-    // random diatonic frequency
-    // float freq = 440.0f * (float)pow(2.0d, floor((((double)rand())/((double)RAND_MAX)) * 48.0d) / 12.0d);
+//     // random diatonic frequency
+//     // float freq = 440.0f * (float)pow(2.0d, floor((((double)rand())/((double)RAND_MAX)) * 48.0d) / 12.0d);
 
-    // random pentatonic frequency
-    #define PENTATONIC_SCALE_LENGTH 5
-    #define PENTATONIC_SCALE_MAJOR   {0,2,4,7,9}
-    #define PENTATONIC_SCALE_MINOR   {0,2,4,7,7}
-    #define PENTATONIC_SCALE_FOURTHS {0,5,7,5,10}
-    #define PENTATONIC_RANDOM_DETUNE 0.01f
-    double pentatonic_scale[PENTATONIC_SCALE_LENGTH] = PENTATONIC_SCALE_MAJOR;
-    #define PENTATONIC_FREQS_LENGTH 18
-    float pentatonic_freqs[PENTATONIC_FREQS_LENGTH];
-    for (int ii = 0; ii < PENTATONIC_FREQS_LENGTH; ii++) {
-      double note = pentatonic_scale[ii % PENTATONIC_SCALE_LENGTH];
-      double octave = ii / PENTATONIC_SCALE_LENGTH;
-      pentatonic_freqs[ii] = 440.0f * (float)(pow(2.0d, note/12.0d) * pow(2.0d, octave));
-    }
+//     // random pentatonic frequency
+//     #define PENTATONIC_SCALE_LENGTH 5
+//     #define PENTATONIC_SCALE_MAJOR   {0,2,4,7,9}
+//     #define PENTATONIC_SCALE_MINOR   {0,2,4,7,7}
+//     #define PENTATONIC_SCALE_FOURTHS {0,5,7,5,10}
+//     #define PENTATONIC_RANDOM_DETUNE 0.01f
+//     double pentatonic_scale[PENTATONIC_SCALE_LENGTH] = PENTATONIC_SCALE_MAJOR;
+//     #define PENTATONIC_FREQS_LENGTH 18
+//     float pentatonic_freqs[PENTATONIC_FREQS_LENGTH];
+//     for (int ii = 0; ii < PENTATONIC_FREQS_LENGTH; ii++) {
+//       double note = pentatonic_scale[ii % PENTATONIC_SCALE_LENGTH];
+//       double octave = ii / PENTATONIC_SCALE_LENGTH;
+//       pentatonic_freqs[ii] = 440.0f * (float)(pow(2.0d, note/12.0d) * pow(2.0d, octave));
+//     }
 
-    // count up and down
-    counter += 1;
-    bool countup = (counter / PENTATONIC_FREQS_LENGTH) % 2 == 0;
-    int pentatonic_freq_index;
-    if (countup)
-      pentatonic_freq_index = counter % PENTATONIC_FREQS_LENGTH;
-    else
-      pentatonic_freq_index = PENTATONIC_FREQS_LENGTH - (counter % PENTATONIC_FREQS_LENGTH) - 1;
+//     // count up and down
+//     counter += 1;
+//     bool countup = (counter / PENTATONIC_FREQS_LENGTH) % 2 == 0;
+//     int pentatonic_freq_index;
+//     if (countup)
+//       pentatonic_freq_index = counter % PENTATONIC_FREQS_LENGTH;
+//     else
+//       pentatonic_freq_index = PENTATONIC_FREQS_LENGTH - (counter % PENTATONIC_FREQS_LENGTH) - 1;
 
-    // 40% chance of picking a note a few notes away but carefully bound the values
-    if (rand() % 5 < 1) {
-      pentatonic_freq_index += 2 * ((rand() % 7) - 3);
-    }
-    if (pentatonic_freq_index < 0)
-      pentatonic_freq_index = 0;
-    if (pentatonic_freq_index >= PENTATONIC_FREQS_LENGTH)
-      pentatonic_freq_index = PENTATONIC_FREQS_LENGTH - 1;
+//     // 40% chance of picking a note a few notes away but carefully bound the values
+//     if (rand() % 5 < 1) {
+//       pentatonic_freq_index += 2 * ((rand() % 7) - 3);
+//     }
+//     if (pentatonic_freq_index < 0)
+//       pentatonic_freq_index = 0;
+//     if (pentatonic_freq_index >= PENTATONIC_FREQS_LENGTH)
+//       pentatonic_freq_index = PENTATONIC_FREQS_LENGTH - 1;
 
-    float freq = pentatonic_freqs[pentatonic_freq_index] * (1.0f + ( PENTATONIC_RANDOM_DETUNE * ((float)rand())/((float)RAND_MAX) ));
+//     float freq = pentatonic_freqs[pentatonic_freq_index] * (1.0f + ( PENTATONIC_RANDOM_DETUNE * ((float)rand())/((float)RAND_MAX) ));
 
-    for (int ii = 0; ii < echoes; ii++) {
+//     for (int ii = 0; ii < echoes; ii++) {
 
-      // lower the frequency slightly each iteration
-      freq *= freq_detune;
+//       // lower the frequency slightly each iteration
+//       freq *= freq_detune;
 
-      uint32_t delay = initial_delay + (uint32_t)(((float)(base_delay * ii)) * (delay_stretch * (float)(ii + 1)));
-      uint32_t duration = base_duration - ii;
+//       uint32_t delay = initial_delay + (uint32_t)(((float)(base_delay * ii)) * (delay_stretch * (float)(ii + 1)));
+//       uint32_t duration = base_duration - ii;
 
-      audio_delay_push(&queue,  delay, (audio_delay_event){freq, 0.0f, duration});
-    }
-  }
+//       audio_delay_push(&queue,  delay, (audio_delay_event){freq, 0.0f, duration});
+//     }
+//   }
 
   return true;
 }
