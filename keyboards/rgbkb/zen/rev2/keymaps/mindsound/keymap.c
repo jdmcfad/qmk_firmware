@@ -27,17 +27,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Qwerty
    * ,-----------------------------------------.              .-----------------------------------------.
-   * | GESC |   1  |   2  |   3  |   4  |   5  |              |   6  |   7  |   8  |   9  |   0  |   \  |
+   * | GESC |   1  |   2  |   3  |   4  |   5  |              |   6  |   7  |   8  |   9  |   0  | Bksp |
    * |------+------+------+------+------+------|              |------+------+------+------+------+------|
-   * | Tab  |   Q  |   W  |   E  |   R  |   T  |              |   Y  |   U  |   I  |   O  |   P  | Bksp |
+   * | Tab  |   Q  |   W  |   E  |   R  |   T  |              |   Y  |   U  |   I  |   O  |   P  |  \   |
    * |------+------+------+------+------+------|              |------+------+------+------+------+------|
    * | Ctrl |   A  |   S  |   D  |   F  |   G  |              |   H  |   J  |   K  |   L  |   ;  |  "   |
    * |------+------+------+------+------+------+------..------+------+------+------+------+------+------|
    * |Shift |   Z  |   X  |   C  |   V  |   B  |RGBPrv||RGBNxt|   N  |   M  |   ,  |   .  |   /  |Enter |
    * |------+------+------+------+------+------+------||------+------+------+------+------+------+------|
-   * |Media | Del  | GUI  | Alt  |Raise |Space | Bksp ||Enter |Space |Lower | Left | Down | Up   |Right |
+   * |Media | Del  | GUI  | Alt  |Raise |HSpace| Del  || Bksp |Space |Lower | Left | Down | Up   |Right |
    * `----------------------------------+-------------''------------------------------------------------'
-   *                                    |Space | Bksp ||Enter |Space |
+   *                                    |HSpace| Del  || Bksp |Space |
    *                                    '-------------''-------------'
    */
   [_QWERTY] = LAYOUT( \
@@ -45,8 +45,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,  KC_T,                       KC_Y,     KC_U,  KC_I,    KC_O,    KC_P,    KC_BSLS, \
     CTRL_ESC,  KC_A,    KC_S,    KC_D,    KC_F,  KC_G,                       KC_H,     KC_J,  KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
     KC_LSFT,   KC_Z,    KC_X,    KC_C,    KC_V,  KC_B,    RGB_RMOD,RGB_MOD,  KC_N,     KC_M,  KC_COMM, KC_DOT,  KC_SLSH, KC_ENT,  \
-    KC_MPLY,   KC_DEL,  KC_LGUI, KC_LALT, LOWER, KC_SPC,  KC_DEL, KC_BSPC,  KC_SPACE, RAISE, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,\
-                                                 KC_SPC,  KC_DEL, KC_BSPC,  KC_SPACE \
+    KC_MPLY,   KC_DEL,  KC_LGUI, KC_LALT, LOWER, HYPR_SPC,KC_DEL, KC_BSPC,  KC_SPACE, RAISE, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,\
+                                                 HYPR_SPC,KC_DEL, KC_BSPC,  KC_SPACE \
   ),
 
   /* LOWER
