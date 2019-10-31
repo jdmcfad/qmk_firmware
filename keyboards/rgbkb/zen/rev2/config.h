@@ -62,8 +62,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LOCKING_RESYNC_ENABLE
 
 /* ws2812 RGB LED */
-#define RGBLED_NUM 34    // Number of LEDs
-#define RGBLIGHT_ANIMATIONS
+#define RGBLED_NUM 68    // Number of LEDs
+#define DRIVER_LED_TOTAL  RGBLED_NUM
+
+#define RGB_MATRIX_CENTER { 112, 37 }
 
 /*
  * Feature disable options
